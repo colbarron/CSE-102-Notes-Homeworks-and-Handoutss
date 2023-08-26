@@ -767,12 +767,73 @@ $$\frac{1}{2} \cdot \lim_{n \rightarrow \infty} \frac{\ln(n)}{\ln(n)^{\frac{1}{2
 $$\text{Same base but bottom term has a smaller power thus this limit is infinite.}$$
 $$\sqrt{\ln(n)} = \omega(\ln(\ln(n)))$$
 
+\subsubsection{Asymptotic Growth Handout Exercise 13E}
+$$\sqrt{n} \text{ compared to } \sqrt{2}^{\ln(n)}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{n}}{\sqrt{2}^{\ln(n)}} $$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{n}}{\sqrt{2}^{\ln(n)}} $$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2}^{\log_{\sqrt{2}}(\sqrt{n})}}{\sqrt{2}^{\ln(n)}} $$
+$$\lim_{n \rightarrow \infty} \sqrt{2}^{\log_{\sqrt{2}}(\sqrt{n}) - \ln(n)} $$
+$$\lim_{n \rightarrow \infty} \sqrt{2}^{\frac{\ln(\sqrt{n})}{\ln(\sqrt{2})} - \ln(n)} $$
+$$\lim_{n \rightarrow \infty} \sqrt{2}^{\frac{\ln(n)}{2 \cdot \ln(\sqrt{2})} - \frac{2\ln(\sqrt{2}) \cdot \ln(n)}{2\cdot\ln(\sqrt{2})}} $$
+$$\lim_{n \rightarrow \infty} \sqrt{2}^{\frac{\ln(n) \cdot (1 - 2 \ln(\sqrt{2}))}{2 \cdot \ln(2)}} = \infty$$
+$$\text{Since exponent is positive and infinitely growing this limit is infinite.}$$
+$$\sqrt{n} = \omega(\sqrt{2}^{\ln(n)})$$
 
+\subsubsection{Asymptotic Growth Handout Exercise 13F}
+$$n^{\ln(\ln(n))} \text{ compared to } 2^{\ln^2(n)}$$
+$$\lim_{n \rightarrow \infty} \frac{n^{\ln(\ln(n))}}{2^{\ln^2(n)}} $$
+$$\lim_{n \rightarrow \infty} \frac{2^{\log_{2}(n^{\ln(\ln(n))})}}{2^{\ln^2(n)}} $$
+$$\lim_{n \rightarrow \infty} \frac{2^{\ln(\ln(n)) \cdot \log_{2}(n)}}{2^{\ln^2(n)}} $$
+$$\lim_{n \rightarrow \infty} 2^{\ln(\ln(n)) \cdot \log_{2}(n) - \ln^2(n)} $$
+$$\lim_{n \rightarrow \infty} 2^{\ln(\ln(n)) \cdot \frac{\ln(n)}{\ln(2)} - \ln^2(n)} $$
+$$\lim_{n \rightarrow \infty} 2^{\ln(n) \cdot (\frac{\ln(\ln(n))}{\ln(2)} - \ln(n))} $$
+$$\text{Finding out if } \ln(ln(n)) = o(ln(n))$$
+$$\lim_{n \rightarrow \infty} \frac{\ln(\ln(n))}{\ln(n)} $$
+$$\lim_{n \rightarrow \infty} \frac{n}{n \ln(n)} $$
+$$\lim_{n \rightarrow \infty} \frac{1}{\ln(n)} = 0$$
+$$\ln(\ln(n)) = o(\ln(n))$$
+$$\text{Since } \ln(\ln(n)) = o(\ln(n)) \text{ then the exponent will grow to have a negative power thus limit is 0.}$$
+$$n^{\ln(\ln(n))} = o(2^{\ln^2(n)})$$
+
+\subsubsection{Asymptotic Growth Handout Exercise 14}
+Prove $f(n) ~ g(n)$, which implies $f(n) = \Theta(g(n))$ and $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 1$, if and only if $f(n) = g(n) + o(g(n))$.
+
+$$\text{Let } f(n) = \Theta(g(n))$$
+$$\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = k$$
+$$\text{Let } f(n) = g(n) + o(g(n))$$
+$$\lim_{n \rightarrow \infty} \frac{g(n) + o(g(n))}{g(n)}$$
+$$\lim_{n \rightarrow \infty} \frac{g(n)}{g(n)} + \frac{o(g(n))}{g(n)}$$
+$$\text{Let } h(n) = g(n) \text{ which means } \lim_{n \rightarrow \infty} \frac{h(n)}{g(n)} = 0$$
+$$\lim_{n \rightarrow \infty} \frac{g(n)}{g(n)} + \frac{h(g(n))}{g(n)}$$
+$$\lim_{n \rightarrow \infty} 1 + 0 = 1$$
+$$\text{Q.E.D}$$
 
 
 \section{Lecture 4}
 
-Notes for Lecture 4.
+Notes for Lecture 4. In summary this lecture will cover common functions in algorithm analysis.
+
+\subsection{Some Common Functions Handout: Ceilings and Floors}
+Given $x \in \mathbb{R}$, we denote $\lfloor x \rfloor$ and $\lceil x \rceil$ as the $\textbf{floor}$ of x and $\textbf{ceiling}$ of x, respectively. These are defined to be unique integers satisfying the inequality:
+
+$$x - 1 < \lfloor x \rfloor \le x \le \lceil x \rceil < x + 1$$
+
+Equivalently, if $x \in \mathbb{R}$ and $N \in \mathbb{Z}$ then:
+
+\begin{enumerate}
+    \item $N = \lfloor x \rfloor$ if and only if $N \le x < N + 1$ and
+    \item $N = \lceil x \rceil$ if and only if $N - 1 < x \le N$
+\end{enumerate}
+
+In other words:
+
+\begin{enumerate}
+    \item $\lfloor x \rfloor$ is the $\textbf{greatest integer less than or equal to x}$, and
+    \item $\lceil x \rceil$ is the $\textbf{least integer greater than or equal to x}$
+\end{enumerate}
+
+
+
 \iftrue
     
 \includepdf[pages=1-9]{Handouts/AsymptoticGrowth.pdf}
