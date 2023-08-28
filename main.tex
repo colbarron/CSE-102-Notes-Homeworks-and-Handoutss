@@ -15,6 +15,7 @@
 \usepackage{float}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{pdfpages}
+\usepackage{enumitem}   
 
 
 \title{CSE 102 Notes, Handouts, and Homeworks}
@@ -796,7 +797,7 @@ $$\text{Since } \ln(\ln(n)) = o(\ln(n)) \text{ then the exponent will grow to ha
 $$n^{\ln(\ln(n))} = o(2^{\ln^2(n)})$$
 
 \subsubsection{Asymptotic Growth Handout Exercise 14}
-Prove $f(n) ~ g(n)$, which implies $f(n) = \Theta(g(n))$ and $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 1$, if and only if $f(n) = g(n) + o(g(n))$.
+Prove $f(n) \sim g(n)$, which implies $f(n) = \Theta(g(n))$ and $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 1$, if and only if $f(n) = g(n) + o(g(n))$.
 
 $$\text{Let } f(n) = \Theta(g(n))$$
 $$\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = k$$
@@ -832,19 +833,242 @@ In other words:
     \item $\lceil x \rceil$ is the $\textbf{least integer greater than or equal to x}$
 \end{enumerate}
 
+\subsubsection{Ceiling and Floors: Lemma 1}
 
+Let $x \in \mathbb{R}$ and $a,b \in \mathbb{Z}$. Then 
+
+\begin{enumerate}
+    \item $a \le x < b$ if and only if $a \le \lfloor x \rfloor < b$, and 
+    \item $a < x \le b$ if and only if $a < \lceil x \rceil \le b$.
+\end{enumerate}
+
+$\textbf{Proof of Part 1:}$
+\begin{enumerate}[label=(\roman*)]
+\item $a \le x \implies a \le \lfloor x \rfloor \text{ since of all integers that are less than or equal to x, } \lfloor x \rfloor \text{ is the greatest.}$
+\item $x < b \implies \lfloor x \rfloor < b \text{, s since } \lfloor x \rfloor \le x.$
+\item $a \le \lfloor x \rfloor \implies a \le x \text{, since } \lfloor x \rfloor \le x.$
+\item $\lfloor x \rfloor < b \implies x < b. \text{, since } b \le x \implies b \le \lfloor x \rfloor \text{ by (i).}$
+\end{enumerate}
+
+\subsubsection{Some Common Functions Handout Exercise 1}
+$\textbf{Proof of Part 2:}$
+\begin{enumerate}[label=(\roman*)]
+\item $x \le b \implies \lceil x \rceil \le b \text{ since of all integers that are greater than or equal to x, } \lceil x \rceil \text{ is the smallest.}$
+\item $a < x \implies a < \lceil x \rceil \text{, since } x \le \lceil x \rceil.$
+\item $\lceil x \rceil \le b \implies x \le b \text{, since } x \le \lceil x \rceil.$
+\item $a < \lceil x \rceil \implies a < x \text{, since } a \le x \implies a \le \lceil x \rceil \text{ by (i).}$
+\end{enumerate}
+
+\subsubsection{Ceiling and Floors: Lemma 2}
+Let $x \in \mathbb{R}$ and $m \in \mathbb{Z}^+$. Then:
+\begin{enumerate}
+    \item $\lfloor \frac{\lfloor x \rfloor}{m} \rfloor = \lfloor \frac{x}{m} \rfloor$, and 
+    \item $\lceil \frac{\lceil x \rceil}{m} \rceil = \lceil\frac{x}{m} \rceil$
+\end{enumerate}
+
+\textbf{Proof of 1:}
+$$\text{Let } N = \lfloor \frac{\lfloor x \rfloor}{m} \rfloor$$
+$$N \le \frac{\lfloor x \rfloor}{m} < N + 1$$
+$$\implies mN \le \lfloor x \rfloor < m(N + 1)$$
+$$\implies mN \le x < m(N + 1)    \;\;\;\;\text{(by lemma 1)}$$
+$$\implies N \le \frac{x}{m}< N + 1 $$
+$$\implies N = \lfloor \frac{x}{m} \rfloor$$
+$$\lfloor \frac{\lfloor x \rfloor}{m} \rfloor = N = \lfloor \frac{x}{m} \rfloor$$
+$$\text{Q.E.D}$$
+
+\subsubsection{Some Common Functions Handout Exercise 2}
+$\textbf{Proof of Part 2:}$
+$$\text{Let } N = \lceil \frac{\lceil x \rceil}{m} \rceil$$
+$$N - 1 < \frac{\lceil x \rceil}{m} \le N$$
+$$\implies m(N - 1) < \lceil x \rceil \le mN$$
+$$\implies m(N - 1) < x  \le mN \;\;\;\;\text{(by lemma 1)} $$
+$$N - 1 < \frac{ x }{m} \le N$$
+$$\implies N = \lceil \frac{x}{m} \rceil$$
+$$\lceil \frac{\lceil x \rceil}{m} \rceil = N = \lceil \frac{x}{m} \rceil$$
+$$\text{Q.E.D}$$
+
+\subsubsection{Ceiling and Floors: Lemma 3}
+Let $a,b,n \in \mathbb{Z}^+$. Then:
+
+\begin{enumerate}
+    \item $\lfloor \frac{\lfloor \frac{n}{a} \rfloor}{b} \rfloor = \lfloor \frac{n}{ab} \rfloor$, and
+    \item $\lceil \frac{\lceil \frac{n}{a} \rceil}{b} \rceil = \lceil \frac{n}{ab} \rceil$
+\end{enumerate}
+
+\textbf{Proof: } Set $x = \frac{n}{a}$ and $m = b$ in lemma 2.
+
+\subsubsection{Some Common Functions Handout Exercise 3}
+Let $n \in \mathbb{Z}$. Show that (a) $\lfloor \frac{n}{2} \rfloor + \lceil \frac{n}{2} \rceil = n$, (b) $\lceil \frac{n}{2} \rceil = \lfloor \frac{n + 1}{2} \rfloor$, and (c) $\lfloor \frac{n}{2} \rfloor = \lceil \frac{n - 1}{2} \rceil$.
+
+$$\text{Part A}$$
+$$\lfloor \frac{n}{2} \rfloor + \lceil \frac{n}{2} \rceil = n$$
+$$\text{Case 1: } n = 2k$$
+$$\lfloor \frac{2k}{2} \rfloor + \lceil \frac{2k}{2} \rceil = 2k$$
+$$\lfloor k \rfloor + \lceil k \rceil = 2k$$
+$$k + k = 2k  \;\;\;\; \text{ by definition of ceiling and floor}$$
+$$2k = 2k $$
+$$n = n$$
+$$\text{Case 2: } n = 2k + 1$$
+$$\lfloor \frac{2k + 1}{2} \rfloor + \lceil \frac{2k + 1}{2} \rceil = 2k + 1$$
+$$\lfloor k + \frac{1}{2} \rfloor + \lceil k + \frac{1}{2} \rceil = 2k + 1$$
+$$k + k + 1 = 2k + 1 \;\;\;\; \text{ by definition of ceiling and floor}$$
+$$2k + 1 = 2k + 1$$
+$$n = n$$
+$$\text{As seen either case of n being even or odd, the equality of n = n still holds.}$$
+$$\text{Q.E.D}$$
+
+$$\text{Part B}$$
+$$\lceil \frac{n}{2} \rceil = \lfloor \frac{n + 1}{2} \rfloor$$
+$$\text{Case 1: } n = 2k$$
+$$\lceil \frac{2k}{2} \rceil = \lfloor \frac{2k + 1}{2} \rfloor$$
+$$\lceil k \rceil = \lfloor k + \frac{1}{2} \rfloor$$
+$$ k  = k \;\;\;\;\text{by definition of ceiling and floor}$$
+$$\text{Case 2: } n = 2k + 1$$
+$$\lceil \frac{2k + 1}{2} \rceil = \lfloor \frac{2k + 2}{2} \rfloor$$
+$$\lceil k + \frac{1}{2} \rceil = \lfloor k + 1 \rfloor$$
+$$k + 1 =  k + 1 \;\;\;\;\text{by definition of ceiling and floor}$$
+$$k = k$$
+$$\text{Whether n is odd or even, in the end the constant k is still equal.}$$
+$$\lceil \frac{n}{2} \rceil = \lfloor \frac{n + 1}{2} \rfloor$$
+$$\text{Q.E.D}$$
+
+$$\text{Part C}$$
+$$\lfloor \frac{n}{2} \rfloor = \lceil \frac{n - 1}{2} \rceil$$
+$$\text{Case 1: } n = 2k$$
+$$\lfloor \frac{2k}{2} \rfloor = \lceil \frac{2k - 1}{2} \rceil$$
+$$\lfloor k \rfloor = \lceil k - \frac{1}{2} \rceil$$
+$$k = k\;\;\;\;\text{by definition of ceiling and floor}$$
+$$\text{Case 2: } n = 2k + 1$$
+$$\lfloor \frac{2k + 1}{2} \rfloor = \lceil \frac{2k}{2} \rceil$$
+$$\lfloor k + \frac{1}{2} \rfloor = \lceil k \rceil$$
+$$k = k \;\;\;\;\text{by definition of ceiling and floor}$$
+$$\text{Whether n is odd or even, in the end the constant k is still equal.}$$
+$$\lfloor \frac{n}{2} \rfloor = \lceil \frac{n - 1}{2} \rceil$$
+$$\text{Q.E.D}$$
+
+\subsection{Some Common Functions Handout: Logarithms}
+Let $x,a,b \in \mathbb{R}$ where $x > 0, a > 1, \text{ and } b > 1$. Then $\log_{a}(x)$ denotes the exponent on a which gives $x$. In other words, $\log_{a}(x)$ is the inverse function of $a^x$, which means $a^{\log_{a}(x)} = x$ and $\log_{a}(x) = x$. Thus:
+
+$$x = a^{\log_{a}(x)} = (b^{\log_{b}(a)})^{\log_{a}(x)} = b^{\log_{b}(a) \cdot \log_{a}(x)}$$
+
+Taking $\log_{b}$ of the equation above yields the equation below:
+
+$$\log_{b}(x) = \log_{b}(a) \cdot \log_{a}(x)$$
+
+The equation above shows the relation $\log_{b}(x) = k \cdot \log_{a}(x)$, i.e. any two logs functions differ by a constant. Thus it follows that $\log_{b}(x) = \Theta(\log_{a}(x))$, so in terms of asymptotic growth rates, there is just one log function. The equation above implies:
+
+$$\log_{a}(x) = \frac{\log_{b}(x)}{\log_{b}(a)}$$
+
+which is to convert from one log base to another. In particular: $\lg(x) = \frac{\ln(x)}{\ln(2)}$. Here we use $\lg() = \log_{2}()$, and $\ln() = \log_{e}()$, where $e = 2.71828\dots$. The equation $\log_{b}(x) = \log_{b}(a) \cdot \log_{a}(x)$ also implies $\log_{b}(a) \cdot a^{\log_{b}(x)} = a^{\log_{a}(x) \cdot \log_{b}(a)} = (a^{\log_{a}(x)})^{\log_{b}(a)} = x^{\log_{b}(a)}$, which gives the formula:
+
+$$a^{\log_{b}(x)} = x^{\log_{b}(a)}$$
+
+\subsection{Some Common Functions Handout: Stirling's Formula}
+Let $n \in \mathbb{Z}^+$. Then 
+$$n! = \sqrt{2\pi n}\cdot  (\frac{n}{e})^n \cdot (1 + \Theta(\frac{1}{n}))$$
+
+Stirling's formula gives a way to determine asymptotic bounds for functions involving factorials (n!). A weaker version of the formula is the asymptotic equivalence: 
+
+$$n! \sim \sqrt{2\pi n}\cdot (\frac{n}{e})^n$$
+
+A proof for Stirling's formula can be found at the following link:
+
+\href{http://www.sosmath.com/calculus/sequence/stirling/stirling.html}{http://www.sosmath.com/calculus/sequence/stirling/stirling.html}
+
+There are 3 corollaries from Stirling's Formula:
+
+$$\textbf{Corollary 1}$$
+$$n! = o(n^n)$$
+$$\textbf{Corollary 2}$$
+$$n! = \omega(b^n) \;\; \forall b > 0$$
+$$\textbf{Corollary 3}$$
+$$\log(n!) = \Theta(n\log(n))$$
+
+\subsubsection{Stirling's Formula Corollary 1 Proof}
+$$\lim_{n \rightarrow \infty} \frac{n!}{n^n}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2\pi n} \cdot n^n \cdot (1 + \Theta(\frac{1}{n}))}{e^n \cdot n^n}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2\pi n} \cdot (1 + \Theta(\frac{1}{n}))}{e^n}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2\pi} \cdot \sqrt{n}}{e^n} = 0$$
+$$\text{The limit is 0 due to the limit being a polynomial over an exponential.}$$
+$$n! = o(n^n)$$
+$$\text{Q.E.D}$$
+
+\subsubsection{Some Common Functions Handout Exercise 4: Stirling's Formula Corollary 2 Proof}
+$$\lim_{n \rightarrow \infty} \frac{n!}{b^n}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2\pi n} \cdot n^n \cdot (1 + \Theta(1 + \frac{1}{n}))}{e^n \cdot b^n}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2\pi n} \cdot n^n}{e^n \cdot b^n}$$
+$$\lim_{n \rightarrow \infty} \frac{\sqrt{2\pi n} \cdot n^n}{n^{\log_{n}(e^n \cdot b^n)}}$$
+$$\lim_{n \rightarrow \infty} \sqrt{2\pi n} \cdot n^{n - \log_{n}(e^n \cdot b^n)} = \infty$$
+$$\text{The exponent grows to positive infinity due to a polynomial minus a log.}$$
+$$n! = \omega(b^n) \;\; \forall b > 0$$
+$$\text{Q.E.D}$$
+
+\subsubsection{Stirling's Formula Corollary 3 Proof}
+$$\lim_{n \rightarrow \infty} \frac{\log(n!)}{n\log(n)}$$
+$$\lim_{n \rightarrow \infty} \frac{\log(\sqrt{2\pi}) + \log(\sqrt{n}) + n\log(n) - n\log(e) + \log(1 + \Theta(\frac{1}{n}))}{n\log(n)}$$
+$$\lim_{n \rightarrow \infty} \frac{\log(\sqrt{2\pi}) + \frac{1}{2}\log(n) + n\log(n) - n\log(e) }{n\log(n)}$$
+$$\lim_{n \rightarrow \infty} \frac{\log(\sqrt{2\pi})}{n\log(n)} + \frac{1}{2n} + 1 - \frac{\log(e)}{\log(n)}$$
+$$\lim_{n \rightarrow \infty} 0 + 0 + 1 - 0 = 1$$
+$$\log(n!) = \Theta(n\log(n))$$
+$$\text{Q.E.D}$$
+
+\subsubsection{Some Common Functions Handout Exercise 5}
+Prove that $\binom{2n}{n} = \Theta(\frac{4^n}{\sqrt{n}})$ 
+
+$$\binom{2n}{n} = \frac{(2n)!}{n!(2n-n)!} = \frac{(2n)!}{(n!)^2}$$
+$$= \frac{\sqrt{4\pi n} \cdot \frac{(2n)^{2n}}{e^{2n}} \cdot (1 + \Theta(\frac{1}{2n}))}{(\sqrt{2\pi n} \cdot \frac{n^n}{e^n} \cdot (1 + \Theta(\frac{1}{n})))^2}$$
+$$= \frac{2\sqrt{\pi n} \cdot \frac{4^n \cdot n^{2n}}{e^{2n}} \cdot (1 + \Theta(\frac{1}{2n}))}{2\pi n \cdot \frac{n^{2n}}{e^{2n}} \cdot (1 + \Theta(\frac{1}{n}))^2}$$
+$$= \frac{4^n \cdot (1 + \Theta(\frac{1}{2n}))}{\sqrt{\pi n} \cdot (1 + \Theta(\frac{1}{n}))^2}$$
+$$=\frac{4^n}{\sqrt{n}} \cdot \frac{(1 + \Theta(\frac{1}{2n}))}{\sqrt{\pi}\cdot (1 + \Theta(\frac{1}{n}))^2}$$
+$$\therefore \frac{\binom{2n}{n}}{\frac{4^n}{\sqrt{n}}} = \frac{(1 + \Theta(\frac{1}{2n}))}{\sqrt{\pi} \cdot (1 + \Theta(\frac{1}{n}))^2}$$
+$$\lim_{n \rightarrow \infty} \frac{\binom{2n}{n}}{\frac{4^n}{\sqrt{n}}} = \lim_{n \rightarrow \infty} \frac{(1 + \Theta(\frac{1}{2n}))}{\sqrt{\pi} \cdot (1 + \Theta(\frac{1}{n}))^2} = \frac{1}{\sqrt{\pi}}$$
+$$\binom{2n}{n} = \Theta(\frac{4^n}{\sqrt{n}})$$
+$$\text{Q.E.D}$$
+
+\subsubsection{Some Common Functions Handout Exercise 6}
+Find a number $a > 0$ such that, $\binom{3n}{n} = \Theta(\frac{a^n}{\sqrt{n}})$.
+
+$$\binom{3n}{n} = \frac{(3n)!}{n!(3n-n)!} = \frac{(3n)!}{n! \cdot (2n)!}$$
+$$= \frac{\sqrt{6\pi n} \cdot \frac{(3n)^{3n}}{e^{3n}} \cdot (1 + \Theta(\frac{1}{3n})) }{(\sqrt{2\pi n} \cdot \frac{n^n}{e^n} \cdot (1 + \Theta(\frac{1}{n})) ) \cdot (\sqrt{4 \pi n} \cdot \frac{4^n \cdot n^{2n}}{e^{2n}} \cdot (1 + \Theta(\frac{1}{2n})))  }$$
+$$= \frac{\sqrt{6\pi n} \cdot \frac{27^n \cdot n^{3n}}{e^{3n}} \cdot (1 + \Theta(\frac{1}{3n})) }{(\sqrt{8\pi^2 n^2} \cdot \frac{4^n \cdot n^{3n}}{e^{3n}} \cdot (1 + \Theta(\frac{1}{n})) \cdot (1 + \Theta(\frac{1}{2n})))}$$
+$$= (\frac{27}{4})^n \cdot \frac{1}{\sqrt{n}} \cdot \sqrt{\frac{3}{4\pi}} \cdot \frac{(1 + \Theta(\frac{1}{3n})) }{((1 + \Theta(\frac{1}{n})) \cdot (1 + \Theta(\frac{1}{2n})))}$$
+$$\text{Let } a = \frac{27}{4}$$
+$$= \frac{a^n}{\sqrt{n}} \cdot \sqrt{\frac{3}{4\pi}} \cdot \frac{(1 + \Theta(\frac{1}{3n})) }{((1 + \Theta(\frac{1}{n})) \cdot (1 + \Theta(\frac{1}{2n})))}$$
+$$\therefore \frac{\binom{3n}{n}}{\frac{a^n}{\sqrt{n}}} = \sqrt{\frac{3}{4\pi}} \cdot \frac{(1 + \Theta(\frac{1}{3n})) }{((1 + \Theta(\frac{1}{n})) \cdot (1 + \Theta(\frac{1}{2n})))}$$
+$$\lim_{n \rightarrow \infty} \frac{\binom{3n}{n}}{\frac{a^n}{\sqrt{n}}} = \lim_{n \rightarrow \infty} \sqrt{\frac{3}{4\pi}} \cdot \frac{(1 + \Theta(\frac{1}{3n})) }{((1 + \Theta(\frac{1}{n})) \cdot (1 + \Theta(\frac{1}{2n})))} = \sqrt{\frac{3}{4\pi}}$$
+$$\binom{3n}{n} = \Theta(\frac{a^n}{\sqrt{n}}) = \Theta(\frac{(\frac{27}{4})^n}{\sqrt{n}})$$
+
+\subsubsection{Some Common Functions Handout Exercise 7}
+Find a number $k \ge 2$ such that, $\binom{kn}{n} = \Theta(\frac{a_{k}^{n}}{\sqrt{n}})$.
+
+$$\binom{kn}{n} = \frac{(kn)!}{n!(n(k-1))!}$$
+$$= \frac{\sqrt{2k\pi n} \cdot \frac{(kn)^{kn}}{e^{kn}} \cdot (1 + \Theta(\frac{1}{kn}))}{(\sqrt{2\pi n} \cdot \frac{n^n}{e^n} \cdot (1 + \Theta(\frac{1}{n}))) \cdot (\sqrt{2\pi n(k-1)} \cdot \frac{(nk-n)^{nk-n}}{e^{nk-n}} \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$= \frac{\sqrt{2k\pi n} \cdot \frac{k^{kn} \cdot n^{kn}}{e^{kn}} \cdot (1 + \Theta(\frac{1}{kn}))}  {(\sqrt{4\pi^2 n^2 (k-1)} \cdot \frac{(nk-n)^{nk-n} \cdot n^n}{e^{nk}} \cdot (1 + \Theta(\frac{1}{n}))) \cdot ( \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$=\frac{(k^k)^n}{\sqrt{n}} \cdot \sqrt{\frac{k}{2\pi(k-1)}} \cdot \frac{n^{kn - n}}{((k-1)n)^{nk-n}}  \cdot \frac{ (1 + \Theta(\frac{1}{kn}))}{(1 + \Theta(\frac{1}{n}))) \cdot ( \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$\text{Let } a_{k} = k^k$$
+$$=\frac{(a_k)^n}{\sqrt{n}} \cdot \sqrt{\frac{k}{2\pi(k-1)}} \cdot \frac{n^{kn - n}}{((k-1)n)^{nk-n}}  \cdot \frac{ (1 + \Theta(\frac{1}{kn}))}{(1 + \Theta(\frac{1}{n}))) \cdot ( \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$\therefore \frac{\binom{kn}{n}}{\frac{(a_k)^n}{\sqrt{n}}} = \sqrt{\frac{k}{2\pi(k-1)}} \cdot \frac{n^{kn - n}}{((k-1)n)^{nk-n}}  \cdot \frac{ (1 + \Theta(\frac{1}{kn}))}{(1 + \Theta(\frac{1}{n}))) \cdot ( \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$\lim_{n \rightarrow \infty} \frac{\binom{kn}{n}}{\frac{(a_k)^n}{\sqrt{n}}} = \lim_{n \rightarrow \infty} \sqrt{\frac{k}{2\pi(k-1)}} \cdot \frac{n^{kn - n}}{((k-1)n)^{nk-n}}  \cdot \frac{ (1 + \Theta(\frac{1}{kn}))}{(1 + \Theta(\frac{1}{n}))) \cdot ( \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$=\sqrt{\frac{k}{2\pi(k-1)}} \cdot \lim_{n \rightarrow \infty}  \frac{n^{kn - n}}{((k-1)n)^{nk-n}}  \cdot \frac{ (1 + \Theta(\frac{1}{kn}))}{(1 + \Theta(\frac{1}{n}))) \cdot ( \cdot (1 + \Theta(\frac{1}{n(k-1)})))}$$
+$$=\sqrt{\frac{k}{2\pi(k-1)}} \cdot \lim_{n \rightarrow \infty}  \frac{n^{kn - n}}{((kn-n)^{kn-n}} $$
+$$\text{Let } m = (k-1)$$
+$$=\sqrt{\frac{k}{2m\pi}} \cdot \lim_{n \rightarrow \infty}  \frac{n^{mn}}{((mn)^{mn}} $$
+$$=\sqrt{\frac{k}{2m\pi}} \cdot \lim_{n \rightarrow \infty}  \frac{\frac{mn}{mn} \cdot n^{mn}}{((mn)^{mn}} $$
+$$=\sqrt{\frac{k}{2m\pi}} \cdot \lim_{n \rightarrow \infty}  \frac{\frac{(mn)^{mn+1}}{(mn)}}{((mn)^{mn}} $$
+$$=\sqrt{\frac{k}{2(k-1)\pi}} \cdot \lim_{n \rightarrow \infty}  \frac{(k-1)n}{(k-1)n} = \sqrt{\frac{k}{2(k-1)\pi}} \; \forall k \ge 2$$
+$$\binom{kn}{n} = \Theta(\frac{a_{k}^{n}}{\sqrt{n}}) = \Theta(\frac{k^{kn}}{\sqrt{n}})$$
 
 \iftrue
     
-\includepdf[pages=1-9]{Handouts/AsymptoticGrowth.pdf}
-\includepdf[pages=1-3]{Handouts/CommonFunctions.pdf}
-\includepdf[pages=1-11]{Handouts/DynamicProgramming.pdf}
-\includepdf[pages=1-11]{Handouts/GraphTheory.pdf}
+%\includepdf[pages=1-9]{Handouts/AsymptoticGrowth.pdf}
+%\includepdf[pages=1-3]{Handouts/CommonFunctions.pdf}
+%\includepdf[pages=1-11]{Handouts/DynamicProgramming.pdf}
+%\includepdf[pages=1-11]{Handouts/GraphTheory.pdf}
 \includepdf[pages=1-11]{Handouts/InductionProofs.pdf}
-\includepdf[pages=1-11]{Handouts/LowerBounds.pdf}
-\includepdf[pages=1-2]{Handouts/MasterTheoremPracticeProblems.pdf}
-\includepdf[pages=1-12]{Handouts/Recurrence.pdf}
-\includepdf[pages=1-6]{Handouts/StirlingFormula.pdf}
+%\includepdf[pages=1-11]{Handouts/LowerBounds.pdf}
+%\includepdf[pages=1-2]{Handouts/MasterTheoremPracticeProblems.pdf}
+%\includepdf[pages=1-12]{Handouts/Recurrence.pdf}
+%\includepdf[pages=1-6]{Handouts/StirlingFormula.pdf}
 
 \includepdf[pages=1-1]{homework/hw1.pdf}
 \includepdf[pages=1-1]{homework/hw2.pdf}
@@ -963,6 +1187,7 @@ $$= \frac{(n+1)(n+2)(6n^3 + 18n^2 + 18n + 6 + 9n^2 + 18n + 9 + n)}{30} $$
 $$= \frac{(n+1)(n+2)(6(n+1)^3 + 9(n+1)^2 + n)}{30} $$
 $$= \frac{(n+1)((n + 1) + 1)(6(n+1)^3 + 9(n+1)^2 + (n + 1) - 1)}{30} $$
 $$\text{Q.E.D}$$
+
 
 
 
