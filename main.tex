@@ -1296,7 +1296,7 @@ $$\text{Base Case: } n = 1$$
 $$T(1) = 0$$
 $$T(1) \le \lg(1) \rightarrow 0 \le 0$$
 $$\text{Induction Hypothesis: } n = k, 1 \le k < n $$
-$$T(k) = \lg(k)$$
+$$T(k) \le \lg(k)$$
 $$\text{Induction Step(} \textbf{IId} \text{): } n = \lfloor \frac{n}{2} \rfloor$$
 $$T(n) \le T(\lfloor \frac{n}{2} \rfloor) + 1$$
 $$\text{Use the induction hypothesis}$$
@@ -1311,7 +1311,7 @@ $$\text{Q.E.D.}$$
 
 If you are trying to prove the $n$th term and you need the $(n-1)$th term use weak induction. If you are trying to prove the $n$th term and you need anything else instead of the $(n-1)$th term, use strong induction.
 
-\iffalse
+\iftrue
     
 %\includepdf[pages=1-9]{Handouts/AsymptoticGrowth.pdf}
 %\includepdf[pages=1-3]{Handouts/CommonFunctions.pdf}
@@ -1441,10 +1441,40 @@ $$= \frac{(n+1)(n+2)(6(n+1)^3 + 9(n+1)^2 + n)}{30} $$
 $$= \frac{(n+1)((n + 1) + 1)(6(n+1)^3 + 9(n+1)^2 + (n + 1) - 1)}{30} $$
 $$\text{Q.E.D}$$
 
-
-
-
 \section{Homework 2 Solutions}
+
+\subsection{Problem 1}
+Let $f(n)$ be a positive increasing function that satisfies $f(\frac{n}{2}) = \Theta(f(n))$. Prove that $\Sigma_{i = 1}^{n} f(i) = \Theta(n \cdot f(n))$.
+
+$$\text{Observe that: }$$
+$$\Sigma_{i = 1}^{n} f(i) \le \Sigma_{i = 1}^{n} f(n) = n \cdot f(n) = O(n \cdot f(n))  $$
+$$\text{Also: }$$
+$$\Sigma_{i = 1}^{n} f(i) \ge \Sigma_{i = \lceil \frac{n}{2} \rceil}^{n} f(i) $$
+$$\ge \Sigma_{i = \lceil \frac{n}{2} \rceil}^{n} f(\lceil \frac{n}{2} \rceil)  $$
+$$ = (n - \lceil \frac{n}{2} \rceil + 1) \cdot f(\lceil \frac{n}{2} \rceil)$$
+$$ = (\lfloor \frac{n}{2} \rfloor + 1) \cdot f(\lceil \frac{n}{2} \rceil)$$
+$$> (\frac{n}{2} - 1 + 1) \cdot f(\frac{n}{2})$$
+$$> \frac{n}{2} \cdot f(\frac{n}{2})$$
+$$\text{Since } f(\frac{n}{2}) = \Theta(f(n)) \text{ then }$$
+$$f(\frac{n}{2}) = \Omega(n \cdot f(n))$$
+$$f(\frac{n}{2}) = \Omega(n \cdot f(n)) = O(n \cdot f(n)) = \Theta(n \cdot f(n))$$
+
+\subsection{Problem 2}
+Prove $\log(n!) = \Theta(n log(n))$ without Stirling's Formula.
+
+$$\text{Observe that:}$$
+$$n! \le n^n \implies \log(n!) \le n\log(n) = O(n\log(n))$$
+$$\text{Also:}$$
+$$\log(n!) \ge \Sigma_{i = \lceil \frac{n}{2} \rceil}^{n} \log(i)$$
+$$\ge \Sigma_{i = \lceil \frac{n}{2} \rceil}^{n} \log(\lceil \frac{n}{2} \rceil)$$
+$$= (n - \lceil \frac{n}{2} \rceil +1) \cdot \log(\lceil \frac{n}{2} \rceil)$$
+$$= (\lfloor \frac{n}{2} \rfloor +1) \cdot \log(\lceil \frac{n}{2} \rceil)$$
+$$> (\frac{n}{2}) \cdot \log(\frac{-n}{2})$$
+$$> \log(\frac{n^{\frac{n}{2}}}{2^\frac{n}{2}}) - \log(2^\frac{n}{2})$$
+$$> \frac{n}{2} \cdot \log(n) = \Omega(n \log(n))$$
+$$\log(n!) = \Omega(n\log(n)) \cap O(n\log(n)) = \Theta(n \log(n))$$
+$$\text{Q.E.D}$$
+
 
 \subsection{Problem 3}
 Find a number $a > 0$ such that, $\binom{3n}{n} = \Theta(\frac{a^n}{\sqrt{n}})$.
@@ -1459,6 +1489,84 @@ $$\therefore \frac{\binom{3n}{n}}{\frac{a^n}{\sqrt{n}}} = \sqrt{\frac{3}{4\pi}} 
 $$\lim_{n \rightarrow \infty} \frac{\binom{3n}{n}}{\frac{a^n}{\sqrt{n}}} = \lim_{n \rightarrow \infty} \sqrt{\frac{3}{4\pi}} \cdot \frac{(1 + \Theta(\frac{1}{3n})) }{((1 + \Theta(\frac{1}{n})) \cdot (1 + \Theta(\frac{1}{2n})))} = \sqrt{\frac{3}{4\pi}}$$
 $$\binom{3n}{n} = \Theta(\frac{a^n}{\sqrt{n}}) = \Theta(\frac{(\frac{27}{4})^n}{\sqrt{n}})$$
 
+\subsection{Problem 4}
 
+Define $S(n)$ for $n \in \mathbb{Z}^+$ by:
 
+\begin{equation*}
+S(n)=\begin{cases}
+          0 \quad &\text{if} \, n = 1 \\
+          S(\lceil \frac{n}{2} \rceil) + 1\quad &\text{if} \, n \ge 2\\
+     \end{cases}
+\end{equation*}
+
+Prove: $\forall n \ge 1: S(n) \ge \lg(n) \implies S(n) = \Omega(\lg(n))$.
+
+$$\text{Base Case: } n = 1$$
+$$S(1) = 0 \implies S(1) \ge \lg(1) \rightarrow 0 \ge 0$$
+$$\text{Inductive Hypothesis: }  n = k: 0 \le k < n$$
+$$S(k) \ge \lg(k)$$
+$$\text{Inductive Step(} \textbf{IId} \text{): } n = \lceil \frac{n}{2} \rceil $$
+$$\text{Inductive Conclusion:}$$
+$$S(n) \ge \lg(n)$$
+$$S(n) = S(\lceil \frac{n}{2} \rceil) + 1$$
+$$\text{Use Inductive Hypothesis}$$
+$$S(n) \ge \lg(\lceil \frac{n}{2} \rceil) + 1$$
+$$\text{Since } \lceil x \rceil \ge x$$
+$$S(n) \ge \lg(\frac{n}{2}) + 1$$
+$$S(n) \ge \lg(n) - \lg(2) + 1$$
+$$S(n) \ge \lg(n) - 1 + 1$$
+$$S(n) \ge \lg(n)$$
+$$S(n) = \Omega(\lg(n))$$
+$$\text{Reached Induction Conclusion by strong induction:}$$
+$$\text{Q.E.D.}$$
+
+\subsection{Problem 5}
+
+Define $T(n)$ for $n \in \mathbb{Z}^+$ by:
+
+\begin{equation*}
+T(n)=\begin{cases}
+          1 \quad &\text{if} \, n = 1 \\
+          T(\lfloor \frac{n}{2} \rfloor) + n^2\quad &\text{if} \, n \ge 2\\
+     \end{cases}
+\end{equation*}
+
+Prove: $\forall n \ge 1: T(n) \le \frac{4n^2}{3} \implies T(n) = O(n^2)$.
+
+$$\text{Base Case: } n = 1$$
+$$T(1) = 1, 1 \le 1^2 \rightarrow 1 \le 1$$
+$$\text{Inductive Hypothesis: } n = k: 0 \le k < n$$
+$$T(k) \le k^2$$
+$$\text{Inductive Step(} \textbf{IId} \text{): } n = \lfloor \frac{n}{2} \rfloor $$
+$$\text{Inductive Conclusion:}$$
+$$T(n) \le n^2$$
+$$T(n) = T(\lfloor \frac{n}{2} \rfloor) + n^2 $$
+$$T(n) \le (\lfloor \frac{n}{2} \rfloor)^2 + n^2 $$
+$$\text{Since }\lfloor x \rfloor \le x$$
+$$T(n) \le (\frac{n}{2})^2 + n^2 $$
+$$T(n) \le (\frac{n^2}{4}) + n^2 $$
+$$T(n) \le \frac{5n^2}{4} \le \frac{4n^2}{3}$$
+$$T(n) = O(n^2)$$
+$$\text{Reached Induction Conclusion by strong induction:}$$
+$$\text{Q.E.D.}$$
+
+\subsection{Problem 6}
+Prove that the First Principle of Mathematical Induction implies the Second Principle of Mathematical Induction.
+
+The First Principle of Mathematical Induction states the following:
+
+$$\text{Let } n \in \mathbb{Z}^+ \text{ and } P(n) \text{ be a Boolean statement}$$
+$$\text{If } P(n_0) \text{ is true and}$$
+$$\text{If } P(n) \text{ is also true then:}$$
+$$P(n + 1) \text{ is also true thus } P(n) \text{ is true for all n} \in \mathbb{Z}^+$$
+
+The Second Principle of Mathematical Induction states the following:
+
+$$\text{Let } n \in \mathbb{Z}^+ \text{, let k be in the range: } n_0 \le k < n \text{ and } P(n) \text{ be a Boolean statement} $$
+$$\text{If } P(n_0) \text{ is true and}$$
+$$\forall k < n:  P(k) \text{ is true then}$$
+$$P(n) \text{ is true}$$
+
+Let us assume that the First Principle of Mathematical Induction is true, then we must show that Second Principle of Mathematical Induction is also true. The base case for both principles require some initial integer $n_0$ and $P(n_0)$ to be true. This is given. Given some positive integer k, the inductive step of the First Principle of Mathematical Induction states that since $P(k)$ is true then $P(k+1)$ is also true. This also implies that $P(n)$ is true thus implying for any integers n, such that $n > k$, $P(n)$ is true, thus $P(n_0) \cap P(n_0 + 1) \cap P(k) \cap \dots \cap P(n-1)$ are all true which is the inductive step of the Second Principle of Mathematical Induction.
 \end{document}
